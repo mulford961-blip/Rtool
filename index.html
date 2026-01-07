@@ -174,31 +174,6 @@
       font-weight: 600;
     }
 
-    /* News */
-    .news-grid {
-      display: grid;
-      gap: 16px;
-      margin-top: 14px;
-    }
-
-    .news-item {
-      padding: 16px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: rgba(11, 14, 12, 0.8);
-    }
-
-    .news-item h3 {
-      font-size: 1rem;
-      margin-bottom: 6px;
-    }
-
-    .news-item p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-top: 6px;
-    }
-
     .chip-row {
       display: flex;
       flex-wrap: wrap;
@@ -354,21 +329,6 @@
   <main>
     <section class="grid">
       <article class="card">
-        <span class="pill">News comparison</span>
-        <h2>Compare coverage across themes</h2>
-        <p class="muted">Track how different outlets are framing the same catalyst. Use this as a quick “what’s the narrative?” dashboard.</p>
-
-        <div class="chip-row">
-          <span class="chip">Macro</span>
-          <span class="chip">Tech</span>
-          <span class="chip">Energy</span>
-          <span class="chip">Healthcare</span>
-        </div>
-
-        <div class="news-grid" id="newsGrid"></div>
-      </article>
-
-      <article class="card">
         <span class="pill">Return estimator</span>
         <h2>Potential return calculator</h2>
         <p class="muted">Estimate future value based on expected annual return and contribution plan.</p>
@@ -473,46 +433,6 @@
   </footer>
 
   <script>
-    // ---- Demo news (static) ----
-    const newsItems = [
-      {
-        title: "Macro desks eye softer inflation print",
-        outlet: "Global Desk",
-        summary: "Strategists are focusing on easing input costs and the timing of rate cuts across Q3.",
-        sentiment: "Cautiously bullish"
-      },
-      {
-        title: "AI infrastructure spend accelerates",
-        outlet: "TechWire",
-        summary: "Cloud leaders reiterated capex guidance, bolstering confidence in chip supply chains.",
-        sentiment: "Positive momentum"
-      },
-      {
-        title: "Energy majors shift to discipline",
-        outlet: "Energy Insight",
-        summary: "Dividend commitments remain firm while upstream growth moderates into 2025.",
-        sentiment: "Stable"
-      },
-      {
-        title: "Healthcare innovation looks resilient",
-        outlet: "BioPulse",
-        summary: "Pipeline updates show steady demand and limited pricing pressure.",
-        sentiment: "Constructive"
-      }
-    ];
-
-    const newsGrid = document.getElementById("newsGrid");
-    newsItems.forEach((item) => {
-      const wrapper = document.createElement("div");
-      wrapper.className = "news-item";
-      wrapper.innerHTML = `
-        <h3>${item.title}</h3>
-        <p><strong>${item.outlet}</strong> · ${item.sentiment}</p>
-        <p>${item.summary}</p>
-      `;
-      newsGrid.appendChild(wrapper);
-    });
-
     // ---- Calculator + visuals ----
     const calcForm = document.getElementById("calcForm");
     const results = document.getElementById("results");
