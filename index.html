@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ReturnScope | Investment Calculator</title>
+  <title>InvestLens | Investment Research</title>
   <style>
     :root {
       color-scheme: light;
@@ -62,7 +62,7 @@
 
     header p {
       color: var(--muted);
-      max-width: 650px;
+      max-width: 720px;
       margin-top: 12px;
       font-size: 1.05rem;
     }
@@ -78,6 +78,7 @@
       display: grid;
       gap: 24px;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: start;
     }
 
     .card {
@@ -103,6 +104,7 @@
       color: var(--accent);
       font-weight: 600;
       font-size: 0.85rem;
+      margin-bottom: 10px;
     }
 
     form {
@@ -124,6 +126,7 @@
       border-radius: 10px;
       border: 1px solid var(--border);
       font-size: 1rem;
+      background: #fff;
     }
 
     button {
@@ -159,6 +162,31 @@
       font-weight: 600;
     }
 
+    /* News */
+    .news-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .news-item {
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fdfdff;
+    }
+
+    .news-item h3 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .news-item p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+
     .chip-row {
       display: flex;
       flex-wrap: wrap;
@@ -175,6 +203,7 @@
       font-weight: 600;
     }
 
+    /* Visuals */
     .visual-grid {
       display: grid;
       gap: 16px;
@@ -230,18 +259,22 @@
       transition: width 0.4s ease;
     }
 
+    /* Scenario bars */
     .chart-card {
       border-radius: 18px;
       border: 1px solid var(--border);
       padding: 20px;
       background: #ffffff;
+      box-shadow: var(--shadow);
     }
 
     .chart-title {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       margin-bottom: 16px;
+      flex-wrap: wrap;
     }
 
     .chart-title h3 {
@@ -266,6 +299,8 @@
       font-size: 0.75rem;
       font-weight: 600;
       padding-bottom: 6px;
+      min-height: 20%;
+      transition: height 0.35s ease;
     }
 
     .chart-bar.secondary {
@@ -282,20 +317,21 @@
       font-size: 0.85rem;
     }
 
+    .muted { color: var(--muted); }
+
     @media (max-width: 720px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
+      header h1 { font-size: 1.8rem; }
+      .chart-bars { grid-template-columns: repeat(3, 1fr); height: 200px; }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="brand">
-      <div class="brand-badge">RS</div>
+      <div class="brand-badge">IL</div>
       <div>
-        <h1>ReturnScope Investment Calculator</h1>
-        <p>Model potential portfolio outcomes with a clear return estimator and quick visuals that highlight contribution mix, growth, and timing.</p>
+        <h1>InvestLens Research Studio</h1>
+        <p>Compare market narratives across sectors and model potential returns with a quick scenario calculator. Keep your focus on signal quality, risk posture, and timing.</p>
       </div>
     </div>
   </header>
@@ -303,9 +339,25 @@
   <main>
     <section class="grid">
       <article class="card">
+        <span class="pill">News comparison</span>
+        <h2>Compare coverage across themes</h2>
+        <p class="muted">Track how different outlets are framing the same catalyst. Use this as a quick “what’s the narrative?” dashboard.</p>
+
+        <div class="chip-row">
+          <span class="chip">Macro</span>
+          <span class="chip">Tech</span>
+          <span class="chip">Energy</span>
+          <span class="chip">Healthcare</span>
+        </div>
+
+        <div class="news-grid" id="newsGrid"></div>
+      </article>
+
+      <article class="card">
         <span class="pill">Return estimator</span>
         <h2>Potential return calculator</h2>
-        <p>Estimate future value based on expected annual return and contribution plan. Adjust variables to see the range in real time.</p>
+        <p class="muted">Estimate future value based on expected annual return and contribution plan.</p>
+
         <form id="calcForm">
           <div>
             <label for="initial">Initial investment ($)</label>
@@ -325,13 +377,15 @@
           </div>
           <button type="submit">Calculate outlook</button>
         </form>
+
         <div class="results" id="results"></div>
       </article>
 
       <article class="card">
         <span class="pill">Visual insights</span>
         <h2>Quick visuals for the plan</h2>
-        <p>See how contributions, growth, and time horizon combine to drive your projected value.</p>
+        <p class="muted">See how contributions, growth, and time horizon combine to drive your projected value.</p>
+
         <div class="visual-grid">
           <div class="metric-card">
             <h3>Contribution share</h3>
@@ -346,6 +400,7 @@
             <p id="monthlyPace">--</p>
           </div>
         </div>
+
         <div class="progress-wrap">
           <div class="progress-row">
             <span>Contributions vs. growth</span>
@@ -369,21 +424,81 @@
         <span class="pill">Optimistic · Base · Conservative</span>
       </div>
       <div class="chart-bars" id="scenarioBars">
-        <div class="chart-bar secondary" style="height: 55%">Year 3</div>
-        <div class="chart-bar" style="height: 72%">Year 5</div>
-        <div class="chart-bar tertiary" style="height: 46%">Year 7</div>
-        <div class="chart-bar secondary" style="height: 64%">Year 9</div>
-        <div class="chart-bar" style="height: 82%">Year 11</div>
-        <div class="chart-bar tertiary" style="height: 52%">Year 13</div>
+        <div class="chart-bar secondary" style="height: 55%">Year 6</div>
+        <div class="chart-bar" style="height: 72%">Year 8</div>
+        <div class="chart-bar tertiary" style="height: 46%">Year 10</div>
+        <div class="chart-bar secondary" style="height: 64%">Year 12</div>
+        <div class="chart-bar" style="height: 82%">Year 14</div>
+        <div class="chart-bar tertiary" style="height: 52%">Year 16</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <span class="pill">Research checklist</span>
+      <h2>Focus areas for a decision memo</h2>
+      <div class="grid">
+        <div>
+          <h3>Signal & sentiment</h3>
+          <p class="muted">Track catalysts, management tone, and analyst revisions in one place.</p>
+        </div>
+        <div>
+          <h3>Valuation & entry</h3>
+          <p class="muted">Compare multiple scenarios and map downside protection levels.</p>
+        </div>
+        <div>
+          <h3>Risk narrative</h3>
+          <p class="muted">List macro risks, regulatory changes, and liquidity constraints.</p>
+        </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>ReturnScope is a demo calculator. Forecasts are illustrative and should not be considered financial advice.</p>
+    <p>InvestLens is a demo research workspace. Forecasts are illustrative and should not be considered financial advice.</p>
   </footer>
 
   <script>
+    // ---- Demo news (static) ----
+    const newsItems = [
+      {
+        title: "Macro desks eye softer inflation print",
+        outlet: "Global Desk",
+        summary: "Strategists are focusing on easing input costs and the timing of rate cuts across Q3.",
+        sentiment: "Cautiously bullish"
+      },
+      {
+        title: "AI infrastructure spend accelerates",
+        outlet: "TechWire",
+        summary: "Cloud leaders reiterated capex guidance, bolstering confidence in chip supply chains.",
+        sentiment: "Positive momentum"
+      },
+      {
+        title: "Energy majors shift to discipline",
+        outlet: "Energy Insight",
+        summary: "Dividend commitments remain firm while upstream growth moderates into 2025.",
+        sentiment: "Stable"
+      },
+      {
+        title: "Healthcare innovation looks resilient",
+        outlet: "BioPulse",
+        summary: "Pipeline updates show steady demand and limited pricing pressure.",
+        sentiment: "Constructive"
+      }
+    ];
+
+    const newsGrid = document.getElementById("newsGrid");
+    newsItems.forEach((item) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "news-item";
+      wrapper.innerHTML = `
+        <h3>${item.title}</h3>
+        <p><strong>${item.outlet}</strong> · ${item.sentiment}</p>
+        <p>${item.summary}</p>
+      `;
+      newsGrid.appendChild(wrapper);
+    });
+
+    // ---- Calculator + visuals ----
     const calcForm = document.getElementById("calcForm");
     const results = document.getElementById("results");
     const contributionShare = document.getElementById("contributionShare");
@@ -400,28 +515,44 @@
         maximumFractionDigits: 0
       }).format(value);
 
+    function projectValue(initial, monthly, annualRate, years) {
+      const months = Math.max(0, Math.round(years * 12));
+      const monthlyRate = Math.max(0, annualRate) / 12;
+      let fv = initial;
+
+      for (let i = 0; i < months; i += 1) {
+        fv = fv * (1 + monthlyRate) + monthly;
+      }
+
+      return fv;
+    }
+
     const calculate = () => {
       const initial = Number(document.getElementById("initial").value || 0);
       const monthly = Number(document.getElementById("monthly").value || 0);
-      const rate = Number(document.getElementById("rate").value || 0) / 100;
+      const ratePct = Number(document.getElementById("rate").value || 0);
       const years = Number(document.getElementById("years").value || 0);
+
+      const rate = ratePct / 100;
       const months = years * 12;
-      const monthlyRate = rate / 12;
 
-      let futureValue = initial;
-      for (let i = 0; i < months; i += 1) {
-        futureValue = futureValue * (1 + monthlyRate) + monthly;
-      }
-
+      const futureValue = projectValue(initial, monthly, rate, years);
       const contributed = initial + monthly * months;
       const growth = futureValue - contributed;
-      const annualized = years > 0 ? (futureValue / Math.max(initial, 1)) ** (1 / years) - 1 : 0;
+
+      // NOTE: This is a rough "annualized vs initial only" metric (simple + consistent)
+      const annualized = years > 0
+        ? (futureValue / Math.max(initial, 1)) ** (1 / years) - 1
+        : 0;
+
       const contributionRatio = futureValue > 0 ? contributed / futureValue : 0;
       const growthRatio = futureValue > 0 ? growth / futureValue : 0;
-      const monthlyVelocity = years > 0 ? futureValue / months : 0;
-      const timeStrength = Math.min((years / 30) * 100, 100);
-      const growthShareValue = Math.round(growthRatio * 100);
+
       const contributionShareValue = Math.round(contributionRatio * 100);
+      const growthShareValue = Math.round(growthRatio * 100);
+      const monthlyVelocity = months > 0 ? futureValue / months : 0;
+
+      const timeStrength = Math.min((years / 30) * 100, 100);
 
       results.innerHTML = `
         <div class="result-row"><span>Total contributions</span><span>${formatCurrency(contributed)}</span></div>
@@ -433,27 +564,27 @@
       contributionShare.textContent = `${contributionShareValue}% of total`;
       growthShare.textContent = `${growthShareValue}% of total`;
       monthlyPace.textContent = `${formatCurrency(monthlyVelocity)} / month`;
-      growthBar.style.width = `${growthShareValue}%`;
+
+      growthBar.style.width = `${Math.min(Math.max(growthShareValue, 0), 100)}%`;
       timeBar.style.width = `${timeStrength}%`;
 
+      // Scenario bars: conservative/base/optimistic around the entered rate
       const baseRate = rate;
       const scenarios = [
-        { label: "Conservative", modifier: -0.03, className: "tertiary" },
-        { label: "Base", modifier: 0, className: "" },
-        { label: "Optimistic", modifier: 0.03, className: "secondary" }
+        { modifier: -0.03, className: "tertiary" }, // Conservative
+        { modifier:  0.00, className: "" },         // Base
+        { modifier:  0.03, className: "secondary" } // Optimistic
       ];
 
       const bars = scenarioBars.querySelectorAll(".chart-bar");
       bars.forEach((bar, index) => {
         const scenario = scenarios[index % scenarios.length];
-        const horizon = (index + 3) * 2;
-        const monthsScenario = horizon * 12;
+        const horizon = (index + 3) * 2; // 6,8,10,12,14,16 years
         const scenarioRate = Math.max(baseRate + scenario.modifier, 0);
-        const scenarioMonthlyRate = scenarioRate / 12;
-        let scenarioValue = initial;
-        for (let i = 0; i < monthsScenario; i += 1) {
-          scenarioValue = scenarioValue * (1 + scenarioMonthlyRate) + monthly;
-        }
+
+        const scenarioValue = projectValue(initial, monthly, scenarioRate, horizon);
+
+        // Normalize bar height vs base future value to keep chart intuitive
         const height = Math.min((scenarioValue / Math.max(futureValue, 1)) * 100, 100);
         bar.style.height = `${Math.max(height, 20)}%`;
         bar.className = `chart-bar ${scenario.className}`.trim();
@@ -466,7 +597,13 @@
       calculate();
     });
 
+    // Recalc on input for "real time"
+    ["initial","monthly","rate","years"].forEach(id => {
+      document.getElementById(id).addEventListener("input", calculate);
+    });
+
     calculate();
   </script>
 </body>
 </html>
+
