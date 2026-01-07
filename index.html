@@ -1,1 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ReturnScope | Investment Calculator</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1b1f2a;
+      --muted: #5c667f;
+      --accent: #295bff;
+      --accent-2: #15c39a;
+      --accent-3: #ffb547;
+      --border: #d7deea;
+      --shadow: 0 18px 50px rgba(26, 39, 70, 0.12);
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 48px 8vw 32px;
+      background: linear-gradient(120deg, #e6edff 0%, #f7f9ff 55%, #ecfff9 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: var(--accent);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      box-shadow: var(--shadow);
+    }
+
+    header h1 {
+      font-size: 2.3rem;
+    }
+
+    header p {
+      color: var(--muted);
+      max-width: 650px;
+      margin-top: 12px;
+      font-size: 1.05rem;
+    }
+
+    main {
+      padding: 24px 8vw 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #f0f3ff;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .results {
+      display: grid;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .result-row span:last-child {
+      font-weight: 600;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #edf1ff;
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .visual-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-top: 20px;
+    }
+
+    .metric-card {
+      background: linear-gradient(140deg, #f6f8ff, #ffffff);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .metric-card h3 {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .metric-card p {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .progress-wrap {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .progress-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .progress-row span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .progress-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: #e9eefc;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width 0.4s ease;
+    }
+
+    .chart-card {
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      background: #ffffff;
+    }
+
+    .chart-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .chart-title h3 {
+      font-size: 1.1rem;
+    }
+
+    .chart-bars {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      align-items: end;
+      gap: 12px;
+      height: 180px;
+    }
+
+    .chart-bar {
+      border-radius: 10px 10px 4px 4px;
+      background: linear-gradient(180deg, rgba(41, 91, 255, 0.9), rgba(41, 91, 255, 0.3));
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      color: #1b1f2a;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding-bottom: 6px;
+    }
+
+    .chart-bar.secondary {
+      background: linear-gradient(180deg, rgba(21, 195, 154, 0.9), rgba(21, 195, 154, 0.3));
+    }
+
+    .chart-bar.tertiary {
+      background: linear-gradient(180deg, rgba(255, 181, 71, 0.9), rgba(255, 181, 71, 0.3));
+    }
+
+    footer {
+      padding: 32px 8vw;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 720px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-badge">RS</div>
+      <div>
+        <h1>ReturnScope Investment Calculator</h1>
+        <p>Model potential portfolio outcomes with a clear return estimator and quick visuals that highlight contribution mix, growth, and timing.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="grid">
+      <article class="card">
+        <span class="pill">Return estimator</span>
+        <h2>Potential return calculator</h2>
+        <p>Estimate future value based on expected annual return and contribution plan. Adjust variables to see the range in real time.</p>
+        <form id="calcForm">
+          <div>
+            <label for="initial">Initial investment ($)</label>
+            <input id="initial" type="number" min="0" step="100" value="25000" />
+          </div>
+          <div>
+            <label for="monthly">Monthly contribution ($)</label>
+            <input id="monthly" type="number" min="0" step="50" value="800" />
+          </div>
+          <div>
+            <label for="rate">Expected annual return (%)</label>
+            <input id="rate" type="number" min="0" max="30" step="0.1" value="8" />
+          </div>
+          <div>
+            <label for="years">Time horizon (years)</label>
+            <input id="years" type="number" min="1" max="50" step="1" value="12" />
+          </div>
+          <button type="submit">Calculate outlook</button>
+        </form>
+        <div class="results" id="results"></div>
+      </article>
+
+      <article class="card">
+        <span class="pill">Visual insights</span>
+        <h2>Quick visuals for the plan</h2>
+        <p>See how contributions, growth, and time horizon combine to drive your projected value.</p>
+        <div class="visual-grid">
+          <div class="metric-card">
+            <h3>Contribution share</h3>
+            <p id="contributionShare">--</p>
+          </div>
+          <div class="metric-card">
+            <h3>Growth share</h3>
+            <p id="growthShare">--</p>
+          </div>
+          <div class="metric-card">
+            <h3>Monthly pace</h3>
+            <p id="monthlyPace">--</p>
+          </div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-row">
+            <span>Contributions vs. growth</span>
+            <div class="progress-bar">
+              <div class="progress-fill" id="growthBar" style="width: 50%"></div>
+            </div>
+          </div>
+          <div class="progress-row">
+            <span>Time horizon strength</span>
+            <div class="progress-bar">
+              <div class="progress-fill" id="timeBar" style="width: 40%"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="chart-card">
+      <div class="chart-title">
+        <h3>Scenario outlook</h3>
+        <span class="pill">Optimistic · Base · Conservative</span>
+      </div>
+      <div class="chart-bars" id="scenarioBars">
+        <div class="chart-bar secondary" style="height: 55%">Year 3</div>
+        <div class="chart-bar" style="height: 72%">Year 5</div>
+        <div class="chart-bar tertiary" style="height: 46%">Year 7</div>
+        <div class="chart-bar secondary" style="height: 64%">Year 9</div>
+        <div class="chart-bar" style="height: 82%">Year 11</div>
+        <div class="chart-bar tertiary" style="height: 52%">Year 13</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>ReturnScope is a demo calculator. Forecasts are illustrative and should not be considered financial advice.</p>
+  </footer>
+
+  <script>
+    const calcForm = document.getElementById("calcForm");
+    const results = document.getElementById("results");
+    const contributionShare = document.getElementById("contributionShare");
+    const growthShare = document.getElementById("growthShare");
+    const monthlyPace = document.getElementById("monthlyPace");
+    const growthBar = document.getElementById("growthBar");
+    const timeBar = document.getElementById("timeBar");
+    const scenarioBars = document.getElementById("scenarioBars");
+
+    const formatCurrency = (value) =>
+      new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+      }).format(value);
+
+    const calculate = () => {
+      const initial = Number(document.getElementById("initial").value || 0);
+      const monthly = Number(document.getElementById("monthly").value || 0);
+      const rate = Number(document.getElementById("rate").value || 0) / 100;
+      const years = Number(document.getElementById("years").value || 0);
+      const months = years * 12;
+      const monthlyRate = rate / 12;
+
+      let futureValue = initial;
+      for (let i = 0; i < months; i += 1) {
+        futureValue = futureValue * (1 + monthlyRate) + monthly;
+      }
+
+      const contributed = initial + monthly * months;
+      const growth = futureValue - contributed;
+      const annualized = years > 0 ? (futureValue / Math.max(initial, 1)) ** (1 / years) - 1 : 0;
+      const contributionRatio = futureValue > 0 ? contributed / futureValue : 0;
+      const growthRatio = futureValue > 0 ? growth / futureValue : 0;
+      const monthlyVelocity = years > 0 ? futureValue / months : 0;
+      const timeStrength = Math.min((years / 30) * 100, 100);
+      const growthShareValue = Math.round(growthRatio * 100);
+      const contributionShareValue = Math.round(contributionRatio * 100);
+
+      results.innerHTML = `
+        <div class="result-row"><span>Total contributions</span><span>${formatCurrency(contributed)}</span></div>
+        <div class="result-row"><span>Projected value</span><span>${formatCurrency(futureValue)}</span></div>
+        <div class="result-row"><span>Estimated growth</span><span>${formatCurrency(growth)}</span></div>
+        <div class="result-row"><span>Annualized growth (approx.)</span><span>${(annualized * 100).toFixed(2)}%</span></div>
+      `;
+
+      contributionShare.textContent = `${contributionShareValue}% of total`;
+      growthShare.textContent = `${growthShareValue}% of total`;
+      monthlyPace.textContent = `${formatCurrency(monthlyVelocity)} / month`;
+      growthBar.style.width = `${growthShareValue}%`;
+      timeBar.style.width = `${timeStrength}%`;
+
+      const baseRate = rate;
+      const scenarios = [
+        { label: "Conservative", modifier: -0.03, className: "tertiary" },
+        { label: "Base", modifier: 0, className: "" },
+        { label: "Optimistic", modifier: 0.03, className: "secondary" }
+      ];
+
+      const bars = scenarioBars.querySelectorAll(".chart-bar");
+      bars.forEach((bar, index) => {
+        const scenario = scenarios[index % scenarios.length];
+        const horizon = (index + 3) * 2;
+        const monthsScenario = horizon * 12;
+        const scenarioRate = Math.max(baseRate + scenario.modifier, 0);
+        const scenarioMonthlyRate = scenarioRate / 12;
+        let scenarioValue = initial;
+        for (let i = 0; i < monthsScenario; i += 1) {
+          scenarioValue = scenarioValue * (1 + scenarioMonthlyRate) + monthly;
+        }
+        const height = Math.min((scenarioValue / Math.max(futureValue, 1)) * 100, 100);
+        bar.style.height = `${Math.max(height, 20)}%`;
+        bar.className = `chart-bar ${scenario.className}`.trim();
+        bar.textContent = `Year ${horizon}`;
+      });
+    };
+
+    calcForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      calculate();
+    });
+
+    calculate();
+  </script>
+</body>
+</html>
