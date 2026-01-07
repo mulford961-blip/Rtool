@@ -13,6 +13,7 @@
       --muted: #5c667f;
       --accent: #295bff;
       --accent-2: #15c39a;
+      --accent-3: #ffb547;
       --border: #d7deea;
       --shadow: 0 18px 50px rgba(26, 39, 70, 0.12);
     }
@@ -31,7 +32,7 @@
     }
 
     header {
-      padding: 40px 8vw 24px;
+      padding: 48px 8vw 32px;
       background: linear-gradient(120deg, #e6edff 0%, #f7f9ff 55%, #ecfff9 100%);
       border-bottom: 1px solid var(--border);
     }
@@ -56,18 +57,18 @@
     }
 
     header h1 {
-      font-size: 2.2rem;
+      font-size: 2.3rem;
     }
 
     header p {
       color: var(--muted);
-      max-width: 650px;
+      max-width: 720px;
       margin-top: 12px;
       font-size: 1.05rem;
     }
 
     main {
-      padding: 32px 8vw 64px;
+      padding: 24px 8vw 80px;
       display: flex;
       flex-direction: column;
       gap: 28px;
@@ -77,6 +78,7 @@
       display: grid;
       gap: 24px;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: start;
     }
 
     .card {
@@ -102,6 +104,7 @@
       color: var(--accent);
       font-weight: 600;
       font-size: 0.85rem;
+      margin-bottom: 10px;
     }
 
     form {
@@ -123,6 +126,7 @@
       border-radius: 10px;
       border: 1px solid var(--border);
       font-size: 1rem;
+      background: #fff;
     }
 
     button {
@@ -158,9 +162,11 @@
       font-weight: 600;
     }
 
+    /* News */
     .news-grid {
       display: grid;
       gap: 16px;
+      margin-top: 14px;
     }
 
     .news-item {
@@ -178,6 +184,7 @@
     .news-item p {
       color: var(--muted);
       font-size: 0.9rem;
+      margin-top: 6px;
     }
 
     .chip-row {
@@ -196,16 +203,125 @@
       font-weight: 600;
     }
 
+    /* Visuals */
+    .visual-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-top: 20px;
+    }
+
+    .metric-card {
+      background: linear-gradient(140deg, #f6f8ff, #ffffff);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .metric-card h3 {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .metric-card p {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .progress-wrap {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .progress-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .progress-row span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .progress-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: #e9eefc;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width 0.4s ease;
+    }
+
+    /* Scenario bars */
+    .chart-card {
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .chart-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .chart-title h3 {
+      font-size: 1.1rem;
+    }
+
+    .chart-bars {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      align-items: end;
+      gap: 12px;
+      height: 180px;
+    }
+
+    .chart-bar {
+      border-radius: 10px 10px 4px 4px;
+      background: linear-gradient(180deg, rgba(41, 91, 255, 0.9), rgba(41, 91, 255, 0.3));
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      color: #1b1f2a;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding-bottom: 6px;
+      min-height: 20%;
+      transition: height 0.35s ease;
+    }
+
+    .chart-bar.secondary {
+      background: linear-gradient(180deg, rgba(21, 195, 154, 0.9), rgba(21, 195, 154, 0.3));
+    }
+
+    .chart-bar.tertiary {
+      background: linear-gradient(180deg, rgba(255, 181, 71, 0.9), rgba(255, 181, 71, 0.3));
+    }
+
     footer {
       padding: 32px 8vw;
       color: var(--muted);
       font-size: 0.85rem;
     }
 
+    .muted { color: var(--muted); }
+
     @media (max-width: 720px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
+      header h1 { font-size: 1.8rem; }
+      .chart-bars { grid-template-columns: repeat(3, 1fr); height: 200px; }
     }
   </style>
 </head>
@@ -225,20 +341,23 @@
       <article class="card">
         <span class="pill">News comparison</span>
         <h2>Compare coverage across themes</h2>
-        <p>Track how different outlets are framing the same catalyst. Use the filters to see the confidence sentiment for each theme.</p>
+        <p class="muted">Track how different outlets are framing the same catalyst. Use this as a quick “what’s the narrative?” dashboard.</p>
+
         <div class="chip-row">
           <span class="chip">Macro</span>
           <span class="chip">Tech</span>
           <span class="chip">Energy</span>
           <span class="chip">Healthcare</span>
         </div>
+
         <div class="news-grid" id="newsGrid"></div>
       </article>
 
       <article class="card">
         <span class="pill">Return estimator</span>
         <h2>Potential return calculator</h2>
-        <p>Estimate future value based on expected annual return and contribution plan. Adjust variables to see the range in real time.</p>
+        <p class="muted">Estimate future value based on expected annual return and contribution plan.</p>
+
         <form id="calcForm">
           <div>
             <label for="initial">Initial investment ($)</label>
@@ -258,8 +377,60 @@
           </div>
           <button type="submit">Calculate outlook</button>
         </form>
+
         <div class="results" id="results"></div>
       </article>
+
+      <article class="card">
+        <span class="pill">Visual insights</span>
+        <h2>Quick visuals for the plan</h2>
+        <p class="muted">See how contributions, growth, and time horizon combine to drive your projected value.</p>
+
+        <div class="visual-grid">
+          <div class="metric-card">
+            <h3>Contribution share</h3>
+            <p id="contributionShare">--</p>
+          </div>
+          <div class="metric-card">
+            <h3>Growth share</h3>
+            <p id="growthShare">--</p>
+          </div>
+          <div class="metric-card">
+            <h3>Monthly pace</h3>
+            <p id="monthlyPace">--</p>
+          </div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-row">
+            <span>Contributions vs. growth</span>
+            <div class="progress-bar">
+              <div class="progress-fill" id="growthBar" style="width: 50%"></div>
+            </div>
+          </div>
+          <div class="progress-row">
+            <span>Time horizon strength</span>
+            <div class="progress-bar">
+              <div class="progress-fill" id="timeBar" style="width: 40%"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="chart-card">
+      <div class="chart-title">
+        <h3>Scenario outlook</h3>
+        <span class="pill">Optimistic · Base · Conservative</span>
+      </div>
+      <div class="chart-bars" id="scenarioBars">
+        <div class="chart-bar secondary" style="height: 55%">Year 6</div>
+        <div class="chart-bar" style="height: 72%">Year 8</div>
+        <div class="chart-bar tertiary" style="height: 46%">Year 10</div>
+        <div class="chart-bar secondary" style="height: 64%">Year 12</div>
+        <div class="chart-bar" style="height: 82%">Year 14</div>
+        <div class="chart-bar tertiary" style="height: 52%">Year 16</div>
+      </div>
     </section>
 
     <section class="card">
@@ -287,6 +458,7 @@
   </footer>
 
   <script>
+    // ---- Demo news (static) ----
     const newsItems = [
       {
         title: "Macro desks eye softer inflation print",
@@ -326,8 +498,15 @@
       newsGrid.appendChild(wrapper);
     });
 
+    // ---- Calculator + visuals ----
     const calcForm = document.getElementById("calcForm");
     const results = document.getElementById("results");
+    const contributionShare = document.getElementById("contributionShare");
+    const growthShare = document.getElementById("growthShare");
+    const monthlyPace = document.getElementById("monthlyPace");
+    const growthBar = document.getElementById("growthBar");
+    const timeBar = document.getElementById("timeBar");
+    const scenarioBars = document.getElementById("scenarioBars");
 
     const formatCurrency = (value) =>
       new Intl.NumberFormat("en-US", {
@@ -336,22 +515,44 @@
         maximumFractionDigits: 0
       }).format(value);
 
+    function projectValue(initial, monthly, annualRate, years) {
+      const months = Math.max(0, Math.round(years * 12));
+      const monthlyRate = Math.max(0, annualRate) / 12;
+      let fv = initial;
+
+      for (let i = 0; i < months; i += 1) {
+        fv = fv * (1 + monthlyRate) + monthly;
+      }
+
+      return fv;
+    }
+
     const calculate = () => {
       const initial = Number(document.getElementById("initial").value || 0);
       const monthly = Number(document.getElementById("monthly").value || 0);
-      const rate = Number(document.getElementById("rate").value || 0) / 100;
+      const ratePct = Number(document.getElementById("rate").value || 0);
       const years = Number(document.getElementById("years").value || 0);
+
+      const rate = ratePct / 100;
       const months = years * 12;
-      const monthlyRate = rate / 12;
 
-      let futureValue = initial;
-      for (let i = 0; i < months; i += 1) {
-        futureValue = futureValue * (1 + monthlyRate) + monthly;
-      }
-
+      const futureValue = projectValue(initial, monthly, rate, years);
       const contributed = initial + monthly * months;
       const growth = futureValue - contributed;
-      const annualized = years > 0 ? (futureValue / Math.max(initial, 1)) ** (1 / years) - 1 : 0;
+
+      // NOTE: This is a rough "annualized vs initial only" metric (simple + consistent)
+      const annualized = years > 0
+        ? (futureValue / Math.max(initial, 1)) ** (1 / years) - 1
+        : 0;
+
+      const contributionRatio = futureValue > 0 ? contributed / futureValue : 0;
+      const growthRatio = futureValue > 0 ? growth / futureValue : 0;
+
+      const contributionShareValue = Math.round(contributionRatio * 100);
+      const growthShareValue = Math.round(growthRatio * 100);
+      const monthlyVelocity = months > 0 ? futureValue / months : 0;
+
+      const timeStrength = Math.min((years / 30) * 100, 100);
 
       results.innerHTML = `
         <div class="result-row"><span>Total contributions</span><span>${formatCurrency(contributed)}</span></div>
@@ -359,6 +560,36 @@
         <div class="result-row"><span>Estimated growth</span><span>${formatCurrency(growth)}</span></div>
         <div class="result-row"><span>Annualized growth (approx.)</span><span>${(annualized * 100).toFixed(2)}%</span></div>
       `;
+
+      contributionShare.textContent = `${contributionShareValue}% of total`;
+      growthShare.textContent = `${growthShareValue}% of total`;
+      monthlyPace.textContent = `${formatCurrency(monthlyVelocity)} / month`;
+
+      growthBar.style.width = `${Math.min(Math.max(growthShareValue, 0), 100)}%`;
+      timeBar.style.width = `${timeStrength}%`;
+
+      // Scenario bars: conservative/base/optimistic around the entered rate
+      const baseRate = rate;
+      const scenarios = [
+        { modifier: -0.03, className: "tertiary" }, // Conservative
+        { modifier:  0.00, className: "" },         // Base
+        { modifier:  0.03, className: "secondary" } // Optimistic
+      ];
+
+      const bars = scenarioBars.querySelectorAll(".chart-bar");
+      bars.forEach((bar, index) => {
+        const scenario = scenarios[index % scenarios.length];
+        const horizon = (index + 3) * 2; // 6,8,10,12,14,16 years
+        const scenarioRate = Math.max(baseRate + scenario.modifier, 0);
+
+        const scenarioValue = projectValue(initial, monthly, scenarioRate, horizon);
+
+        // Normalize bar height vs base future value to keep chart intuitive
+        const height = Math.min((scenarioValue / Math.max(futureValue, 1)) * 100, 100);
+        bar.style.height = `${Math.max(height, 20)}%`;
+        bar.className = `chart-bar ${scenario.className}`.trim();
+        bar.textContent = `Year ${horizon}`;
+      });
     };
 
     calcForm.addEventListener("submit", (event) => {
@@ -366,7 +597,13 @@
       calculate();
     });
 
+    // Recalc on input for "real time"
+    ["initial","monthly","rate","years"].forEach(id => {
+      document.getElementById(id).addEventListener("input", calculate);
+    });
+
     calculate();
   </script>
 </body>
 </html>
+
